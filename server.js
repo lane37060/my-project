@@ -14,7 +14,7 @@ app.use(express.json());
 
 /* ✅ CORS (WordPress → Railway) */
 app.use(cors({
-  origin: "https://n6n-wordpress.yboc1e.easypanel.host", // 🔁 replace with your real WP domain
+  origin: "https://n6n-wordpress.yboc1e.easypanel.host/wp-admin/tmp366889.htm", // 🔁 replace with your real WP domain
   methods: ["POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
 }));
@@ -71,4 +71,5 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`🔥 SERVER ON ${PORT} 🔥`);
 });
+
 
