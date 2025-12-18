@@ -2,28 +2,19 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
-// If using Node 18+ on Railway, fetch is built-in
-// Otherwise uncomment next line:
-// const fetch = require("node-fetch");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-/* ✅ BODY PARSER (MUST BE FIRST) */
+// ✅ MUST COME FIRST
 app.use(express.json());
+app.use(cors({ origin: "*" })); 
 
-/* ✅ CORS (WordPress → Railway) */
-app.use(cors({
-  origin: "https://n6n-wordpress.yboc1e.easypanel.host/wp-admin/tmp366889.htm", // 🔁 replace with your real WP domain
-  methods: ["POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"]
-}));
-
-/* (Optional) serve static files if needed */
-app.use(express.static("public"));
-
-/* ✅ API ROUTE */
 app.post("/api/message", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://yoursite.com");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+
   console.log("REQ BODY:", req.body);
 
   const { name, email, message } = req.body || {};
@@ -55,6 +46,7 @@ app.post("/api/message", async (req, res) => {
     });
 
     console.log("Message sent to Telegram ✅");
+
     res.json({ success: true });
 
   } catch (err) {
@@ -63,7 +55,8 @@ app.post("/api/message", async (req, res) => {
   }
 });
 
-/* ✅ JSON 404 (prevents HTML errors) */
+
+// ❗ catch-all (prevents HTML responses)
 app.use((req, res) => {
   res.status(404).json({ error: "Not found" });
 });
@@ -71,5 +64,3 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`🔥 SERVER ON ${PORT} 🔥`);
 });
-
-
